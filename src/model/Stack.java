@@ -1,6 +1,6 @@
 package model;
 
-public class Stack<T> {
+public class Stack<T> implements IStack<T> {
 
     private Node<T> top;
     private int size;
@@ -36,7 +36,7 @@ public class Stack<T> {
         return data;
     }
 
-    public T peek() {
+    public T front() {
         if (isEmpty()) {
             throw new IllegalStateException("La pila está vacía.");
         }

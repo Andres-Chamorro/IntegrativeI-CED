@@ -1,6 +1,6 @@
 package model;
 
-public class Queue<T> {
+public class Queue<T> implements IQueue<T> {
 
     private Node<T> front;
     private Node<T> rear;
@@ -45,7 +45,7 @@ public class Queue<T> {
         return data;
     }
 
-    public T peek() {
+    public T front() {
         if (isEmpty()) {
             throw new IllegalStateException("La cola está vacía.");
         }
