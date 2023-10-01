@@ -2,20 +2,18 @@ package model;
 
 import java.util.Date;
 
-public class Task{
+public class Task {
     private String title;
     private String description;
     private Date deadline;
-    private int priority;
+    private boolean isPriority;
 
-
-    public Task(String title, String description, Date deadline, int priority) {
+    public Task(String title, String description, Date deadline, boolean priority) {
         this.title = title;
         this.description = description;
         this.deadline = deadline;
-        this.priority = priority;
+        this.isPriority = priority;
     }
-
 
     public String getTitle() {
         return this.title;
@@ -41,14 +39,12 @@ public class Task{
         this.deadline = deadline;
     }
 
-    public int getPriority() {
-        return this.priority;
+    public boolean getIsPriority() {
+        return this.isPriority;
     }
 
-    public void setPriority(int priority) {
-        this.priority = priority;
+    public void setIsPriority(boolean isPriority) {
+        this.isPriority = isPriority;
     }
-
-
 
 }

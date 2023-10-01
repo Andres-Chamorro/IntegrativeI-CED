@@ -80,4 +80,27 @@ public class HashTable<K, V> implements IHash<K, V> {
         return Math.abs(key.hashCode()) % size;
     }
 
+    public int getSize() {
+        return this.size;
+    }
+
+    public void setSize(int size) {
+        this.size = size;
+    }
+
+    public Node<K, V>[] getTabla() {
+        return this.tabla;
+    }
+
+    public void setTabla(Node<K, V>[] tabla) {
+        this.tabla = tabla;
+    }
+
+    public Node<K, V> getBucket(int index) {
+        if (index < 0 || index >= size) {
+            throw new IndexOutOfBoundsException("Índice fuera de rango.");
+        }
+        return tabla[index];
+    }
+
 }
