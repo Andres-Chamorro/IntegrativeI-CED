@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Scanner;
 import model.Controller;
+import model.Priority;
 
 public class Main {
     private Scanner reader;
@@ -70,21 +71,28 @@ public class Main {
         System.out.println("1. Si");
         System.out.println("2. No");
         int option = validateInt();
-        boolean isPriority = false;
+        Priority priority = null;
 
         switch (option) {
             case 1:
-                isPriority = true;
+                priority = Priority.PRIORITY;
                 break;
             case 2:
-                isPriority = false;
+                priority = Priority.NO_PRIORITY;
                 break;
             default:
                 System.out.println("Opción no válida");
                 break;
         }
 
-        String msg = controller.addTask(title, description, deadline, isPriority);
+        String msg = controller.addTask(title, description, deadline, priority);
+        System.out.println(msg);
+    }
+
+    public void deleteTak() {
+        System.out.println("Ingrese la clave de la tarea a eliminar");
+        String idTask = reader.nextLine();
+        String msg = controller.removeTask(idTask);
         System.out.println(msg);
     }
 

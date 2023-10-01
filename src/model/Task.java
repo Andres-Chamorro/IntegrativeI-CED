@@ -6,13 +6,13 @@ public class Task {
     private String title;
     private String description;
     private Date deadline;
-    private boolean isPriority;
+    private Priority priority;
 
-    public Task(String title, String description, Date deadline, boolean priority) {
+    public Task(String title, String description, Date deadline, Priority priority) {
         this.title = title;
         this.description = description;
         this.deadline = deadline;
-        this.isPriority = priority;
+        this.priority = priority;
     }
 
     public String getTitle() {
@@ -39,12 +39,12 @@ public class Task {
         this.deadline = deadline;
     }
 
-    public boolean getIsPriority() {
-        return this.isPriority;
+    public Priority getPriority() {
+        return this.priority;
     }
 
-    public void setIsPriority(boolean isPriority) {
-        this.isPriority = isPriority;
+    public void setPriority(Priority priority) {
+        this.priority = priority;
     }
 
 }
