@@ -1,8 +1,10 @@
 package model;
 
+import customExceptions.EmptyStackException;
+
 public class Stack<T> implements IStack<T> {
 
-    private Node<T> top;
+    private INode<T, T> top;
     private int size;
 
     // Constructor
@@ -20,27 +22,28 @@ public class Stack<T> implements IStack<T> {
     }
 
     public void push(T data) {
-        Node<T> newNode = new Node<>(data);
-        newNode.next = top;
+        Node<T, T> newNode = new Node<>(null, data);
+        newNode.setNext(top);
+        ;
         top = newNode;
         size++;
     }
 
     public T pop() {
         if (isEmpty()) {
-            throw new IllegalStateException("La pila está vacía.");
+            throw new EmptyStackException("No se puede hacer pop en una pila vacía.");
         }
-        T data = top.data;
-        top = top.next;
+        T data = top.getValue();
+        top = top.getNext();
         size--;
         return data;
     }
 
     public T front() {
         if (isEmpty()) {
-            throw new IllegalStateException("La pila está vacía.");
+            throw new EmptyStackException("No se puede obtener el frente de una pila vacía.");
         }
-        return top.data;
+        return top.getValue();
     }
 
 }

@@ -1,9 +1,11 @@
 package model;
 
+import customExceptions.EmptyQueueException;
+
 public class Queue<T> implements IQueue<T> {
 
-    private Node<T> front;
-    private Node<T> rear;
+    private INode<T, T> front;
+    private INode<T, T> rear;
     private int size;
 
     // Constructor
@@ -22,11 +24,12 @@ public class Queue<T> implements IQueue<T> {
     }
 
     public void enqueue(T data) {
-        Node<T> newNode = new Node<>(data);
+        Node<T, T> newNode = new Node<>(data);
         if (isEmpty()) {
             front = newNode;
         } else {
-            rear.next = newNode;
+            rear.setNext(newNode);
+            ;
         }
         rear = newNode;
         size++;
@@ -34,10 +37,10 @@ public class Queue<T> implements IQueue<T> {
 
     public T dequeue() {
         if (isEmpty()) {
-            throw new IllegalStateException("La cola está vacía.");
+            throw new EmptyQueueException("No se puede hacer dequeue en una cola vacía.");
         }
-        T data = front.data;
-        front = front.next;
+        T data = front.getValue();
+        front = front.getNext();
         if (front == null) {
             rear = null;
         }
@@ -47,9 +50,9 @@ public class Queue<T> implements IQueue<T> {
 
     public T front() {
         if (isEmpty()) {
-            throw new IllegalStateException("La cola está vacía.");
+            throw new EmptyQueueException("No se puede obtener el frente de una pila vacía.");
         }
-        return front.data;
+        return front.getValue();
     }
 
 }
