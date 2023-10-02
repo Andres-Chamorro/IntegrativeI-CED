@@ -1,5 +1,6 @@
 package model;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Task {
@@ -45,6 +46,16 @@ public class Task {
 
     public void setPriority(Priority priority) {
         this.priority = priority;
+    }
+
+    @Override
+    public String toString() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String formattedDeadline = dateFormat.format(getDeadline());
+        return "Titulo: " + getTitle() + "\n" +
+                "Description: " + getDescription() + "\n" +
+                "Fecha limite: " + formattedDeadline + "\n" +
+                "Prioridad: " + getPriority();
     }
 
 }

@@ -1,6 +1,5 @@
 package model;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -96,6 +95,40 @@ public class Controller {
         }
 
         return msg + "\n";
+    }
+
+    public void printTasksByDeadline() {
+
+        // Crear una lista enlazada para almacenar todas las tareas
+        Node<String, Task> head = null;
+
+        // Recorrer la tabla hash y agregar todas las tareas a la lista
+        for (int i = 0; i < taskTable.getSize(); i++) {
+            Node<String, Task> node = taskTable.getBucket(i);
+            while (node != null) {
+                Node<String, Task> newNode = new Node<>(node.getKey(), node.getValue());
+                if (head == null) {
+                    head = newNode;
+                } else {
+                    Node<String, Task> temp = head;
+                    while (temp.getNext() != null) {
+                        temp = (Node<String, Task>) temp.getNext();
+                    }
+                    temp.setNext(newNode);
+                }
+                node = (Node<String, Task>) node.getNext();
+            }
+        }
+
+        Node<String, Task> temp = head;
+        while (temp != null) {
+            Task task = temp.getValue();
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            String formattedDeadline = dateFormat.format(task.getDeadline());
+            System.out.println("ID: " + temp.getKey());
+            System.out.println(task.toString());
+            temp = (Node<String, Task>) temp.getNext();
+        }
     }
 
 }
