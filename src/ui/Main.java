@@ -41,8 +41,10 @@ public class Main {
                     addTask();
                     break;
                 case 2:
+                    modifyTask();
                     break;
                 case 3:
+                    deleteTak();
                     break;
                 case 4:
                     // showTasks();
@@ -94,6 +96,75 @@ public class Main {
         String idTask = reader.nextLine();
         String msg = controller.removeTask(idTask);
         System.out.println(msg);
+    }
+
+    public void modifyTask() {
+        System.out.print("Ingrese el ID de la tarea que desea modificar: ");
+        String taskId = reader.nextLine();
+
+        if (controller.searchTask(taskId)) {
+            String newTitle = "";
+            String newDescription = "";
+            Date newDeadline = null;
+            Priority newPriority = null;
+            int modifyChoice;
+
+            do {
+                System.out.println("===== Menú de Modificación de Tarea =====");
+                System.out.println("1. Modificar Título");
+                System.out.println("2. Modificar Descripción");
+                System.out.println("3. Modificar Fecha Límite");
+                System.out.println("4. Modificar Prioridad");
+                System.out.println("0. Volver al menu principal");
+                System.out.print("Elija una opción: ");
+
+                modifyChoice = validateInt();
+                reader.nextLine(); // Consumir la nueva línea después de nextInt()
+
+                switch (modifyChoice) {
+                    case 1:
+                        System.out.print("Nuevo Título: ");
+                        newTitle = reader.nextLine();
+                        break;
+                    case 2:
+                        System.out.print("Nueva Descripción: ");
+                        newDescription = reader.nextLine();
+                        break;
+                    case 3:
+                        System.out.print("Nueva Fecha Límite (yyyy-MM-dd): ");
+                        Date deadline = parseDate();
+                        break;
+                    case 4:
+                        System.out.print("Nueva Prioridad:\n");
+                        System.out.println("1. Prioritaria");
+                        System.out.println("2. No prioritaria");
+                        int option = validateInt();
+
+                        switch (option) {
+                            case 1:
+                                newPriority = Priority.PRIORITY;
+                                break;
+                            case 2:
+                                newPriority = Priority.NO_PRIORITY;
+                                break;
+                            default:
+                                System.out.println("Opción no válida");
+                                break;
+                        }
+                        break;
+                    case 0:
+                        break;
+                    default:
+                        System.out.println("Opción no válida. Intente de nuevo.");
+                        break;
+                }
+            } while (modifyChoice != 0);
+
+            String modifyMessage = controller.modifyTask(taskId, newTitle, newDescription, newDeadline, newPriority);
+            System.out.println(modifyMessage);
+        } else {
+            System.out.println("La tarea con el ID " + taskId + " no existe.");
+        }
     }
 
     public Date parseDate() {
