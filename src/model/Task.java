@@ -3,7 +3,7 @@ package model;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class Task {
+public class Task implements Comparable<Task> {
     private String title;
     private String description;
     private Date deadline;
@@ -56,6 +56,19 @@ public class Task {
                 "Description: " + getDescription() + "\n" +
                 "Fecha limite: " + formattedDeadline + "\n" +
                 "Prioridad: " + getPriority();
+    }
+
+    @Override
+    public int compareTo(Task other) {
+        // Primero, compara por prioridad
+        int priorityComparison = this.getPriority().compareTo(other.getPriority());
+
+        if (priorityComparison != 0) {
+            return priorityComparison;
+        } else {
+            // Si las prioridades son iguales, compara por fecha límite
+            return this.getDeadline().compareTo(other.getDeadline());
+        }
     }
 
 }

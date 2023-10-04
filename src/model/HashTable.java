@@ -2,23 +2,23 @@ package model;
 
 public class HashTable<K, V> implements IHash<K, V> {
     private int size;
-    private Node<K, V>[] tabla;
+    private NodeHash<K, V>[] tabla;
 
     public HashTable(int size) {
         this.size = size;
-        tabla = new Node[size];
+        tabla = new NodeHash[size];
     }
 
     public void put(K key, V value) {
         int hash = getHash(key);
-        Node<K, V> node = new Node<>(key, value);
+        NodeHash<K, V> node = new NodeHash<>(key, value);
 
         if (tabla[hash] == null) {
             tabla[hash] = node;
         } else {
-            Node<K, V> current = tabla[hash];
+            NodeHash<K, V> current = tabla[hash];
             while (current.getNext() != null) {
-                current = (Node<K, V>) current.getNext();
+                current = (NodeHash<K, V>) current.getNext();
             }
             current.setNext(node);
         }
@@ -28,13 +28,13 @@ public class HashTable<K, V> implements IHash<K, V> {
     public V get(K key) {
         int hash = getHash(key);
         if (tabla[hash] != null) {
-            Node<K, V> temp = tabla[hash];
+            NodeHash<K, V> temp = tabla[hash];
 
             while (temp != null) {
                 if (temp.getKey().equals(key)) {
                     return temp.getValue();
                 }
-                temp = (Node<K, V>) temp.getNext();
+                temp = (NodeHash<K, V>) temp.getNext();
             }
         }
         return null; // returns null if the key is not found.
@@ -46,11 +46,11 @@ public class HashTable<K, V> implements IHash<K, V> {
         if (tabla[hash] == null)
             return false;
         else {
-            Node<K, V> temp = tabla[hash];
+            NodeHash<K, V> temp = tabla[hash];
             while (temp != null) {
                 if (temp.getKey().equals(key))
                     return true;
-                temp = (Node<K, V>) temp.getNext();
+                temp = (NodeHash<K, V>) temp.getNext();
             }
             return false;
         }
@@ -60,16 +60,16 @@ public class HashTable<K, V> implements IHash<K, V> {
     public void remove(K key) {
         int hash = getHash(key);
         if (tabla[hash] != null) {
-            Node<K, V> prevEntry = null;
-            Node<K, V> entry = tabla[hash];
+            NodeHash<K, V> prevEntry = null;
+            NodeHash<K, V> entry = tabla[hash];
 
             while (entry.getNext() != null && !entry.getKey().equals(key)) {
                 prevEntry = entry;
-                entry = (Node<K, V>) entry.getNext();
+                entry = (NodeHash<K, V>) entry.getNext();
             }
             if (entry.getKey().equals(key)) {
                 if (prevEntry == null)
-                    tabla[hash] = (Node<K, V>) entry.getNext();
+                    tabla[hash] = (NodeHash<K, V>) entry.getNext();
                 else
                     prevEntry.setNext(entry.getNext());
             }
@@ -88,19 +88,21 @@ public class HashTable<K, V> implements IHash<K, V> {
         this.size = size;
     }
 
-    public Node<K, V>[] getTabla() {
+    public NodeHash<K, V>[] getTabla() {
         return this.tabla;
     }
 
-    public void setTabla(Node<K, V>[] tabla) {
+    public void setTabla(NodeHash<K, V>[] tabla) {
         this.tabla = tabla;
     }
 
-    public Node<K, V> getBucket(int index) {
-        if (index < 0 || index >= size) {
-            throw new IndexOutOfBoundsException("Índice fuera de rango.");
-        }
-        return tabla[index];
-    }
+    /*
+     * public Node<K, V> getBucket(int index) {
+     * if (index < 0 || index >= size) {
+     * throw new IndexOutOfBoundsException("Índice fuera de rango.");
+     * }
+     * return tabla[index];
+     * }
+     */
 
 }

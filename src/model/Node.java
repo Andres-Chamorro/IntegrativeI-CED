@@ -1,49 +1,27 @@
 package model;
 
-public class Node<K, V> implements INode<K, V> {
-    private K key;
-    private V value;
-    private INode<K, V> next;
+public class Node<T> {
+    public T data;
+    public Node<T> next;
 
-    // Constructor para la pila
-    public Node(V value) {
-        this(null, value, null);
+    public Node(T data) {
+        this.data = data;
+        this.next = null;
     }
 
-    // Constructor para la tabla hash
-    public Node(K key, V value) {
-        this(key, value, null);
+    public T getData() {
+        return data;
     }
 
-    // Constructor general
-    public Node(K key, V value, Node<K, V> next) {
-        this.key = key;
-        this.value = value;
-        this.next = next;
+    public void setData(T data) {
+        this.data = data;
     }
 
-    // Métodos getter y setter
-    public K getKey() {
-        return key;
-    }
-
-    public V getValue() {
-        return value;
-    }
-
-    public INode<K, V> getNext() {
+    public Node<T> getNext() {
         return next;
     }
 
-    public void setKey(K key) {
-        this.key = key;
-    }
-
-    public void setValue(V value) {
-        this.value = value;
-    }
-
-    public void setNext(INode<K, V> next) {
+    public void setNext(Node<T> next) {
         this.next = next;
     }
 }

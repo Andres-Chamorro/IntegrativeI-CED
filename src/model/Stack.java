@@ -4,7 +4,7 @@ import customExceptions.EmptyStackException;
 
 public class Stack<T> implements IStack<T> {
 
-    private INode<T, T> top;
+    private Node<T> top;
     private int size;
 
     // Constructor
@@ -22,9 +22,8 @@ public class Stack<T> implements IStack<T> {
     }
 
     public void push(T data) {
-        Node<T, T> newNode = new Node<>(null, data);
+        Node<T> newNode = new Node<>(data);
         newNode.setNext(top);
-        ;
         top = newNode;
         size++;
     }
@@ -33,7 +32,7 @@ public class Stack<T> implements IStack<T> {
         if (isEmpty()) {
             throw new EmptyStackException("No se puede hacer pop en una pila vacía.");
         }
-        T data = top.getValue();
+        T data = top.getData();
         top = top.getNext();
         size--;
         return data;
@@ -43,7 +42,7 @@ public class Stack<T> implements IStack<T> {
         if (isEmpty()) {
             throw new EmptyStackException("No se puede obtener el frente de una pila vacía.");
         }
-        return top.getValue();
+        return top.getData();
     }
 
 }

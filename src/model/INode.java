@@ -1,13 +1,11 @@
 package model;
 
-public interface INode<K, V> {
-    public K getKey();
+public interface INode<T> {
+    public T getdata();
 
-    public V getValue();
+    public void setData(T value);
 
-    public void setValue(V value);
+    public INode<T> getNext();
 
-    public INode<K, V> getNext();
-
-    public void setNext(INode<K, V> next);
+    public void setNext(INode<T> next);
 }
