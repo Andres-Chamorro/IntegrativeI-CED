@@ -48,12 +48,18 @@ public class Controller {
     public String removeTask(String taskId) {
         msg = "";
 
-        // Verificar si la tarea existe en la tabla hash
         if (taskTable.containsKey(taskId)) {
+            Task task = taskTable.get(taskId);
+
             taskTable.remove(taskId);
-            msg = "Tarea eliminada exitosamente.";
-        } else {
-            msg = "La tarea con el ID " + taskId + " no existe.";
+
+            boolean removedFromPriorityQueue = priorityTask.removeElement(task);
+
+            if (removedFromPriorityQueue) {
+                msg = "Tarea eliminada exitosamente.";
+            } else {
+                msg = "La tarea con el ID " + taskId + " no existe.";
+            }
         }
 
         return msg;
@@ -112,10 +118,15 @@ public class Controller {
             return;
         }
 
+        PriorityQueue<Task> tempQueue = new PriorityQueue<>();
+
         while (!priorityTask.isEmpty()) {
             Task task = priorityTask.dequeue();
             System.out.println(task.toString());
+            tempQueue.enqueue(task);
         }
+
+        priorityTask = tempQueue;
         System.out.println("=================================================");
     }
 

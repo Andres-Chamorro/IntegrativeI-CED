@@ -28,4 +28,28 @@ public class PriorityQueue<T extends Comparable<T>> extends Queue<T> {
         size++;
     }
 
+    public boolean removeElement(T element) {
+        boolean valid;
+        if (element != null) {
+            Queue<T> temp = new Queue<>();
+
+            while (!isEmpty()) {
+                T currentItem = dequeue();
+
+                if (!currentItem.equals(element)) {
+                    temp.enqueue(currentItem);
+                }
+            }
+
+            while (!temp.isEmpty()) {
+                enqueue(temp.dequeue());
+            }
+
+            valid = !isEmpty();
+        } else {
+            valid = false;
+        }
+        return valid;
+    }
+
 }
