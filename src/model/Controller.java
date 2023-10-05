@@ -2,33 +2,40 @@ package model;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import dataEstructures.HashTable;
+import dataEstructures.PriorityQueue;
+import dataEstructures.Queue;
 
 public class Controller {
     private HashTable<String, Task> taskTable;
-    Queue<Task> priorityQueue;
+    PriorityQueue<Task> priorityTask;
     Queue<Task> nonPriorityQueue;
     private String msg;
     private int taskIdCounter;
 
     public Controller() {
         taskTable = new HashTable<>(1000);
+        priorityTask = new PriorityQueue<>();
+        nonPriorityQueue = new Queue<>();
         msg = "";
         taskIdCounter = 1;
 
     }
 
-    public String addTask(String title, String description, Date deadline, Priority priority) {
+    public String addTask(String id, String title, String description, Date deadline, Priority priority) {
         msg = "";
         try {
-            Task task = new Task(title, description, deadline, priority);
+            Task task = new Task(id, title, description, deadline, priority);
 
             // Agregar la tarea a la HashTable
-            taskTable.put(generateUniqueID(), task);
+            taskTable.put(id, task);
 
-            if (priority == Priority.PRIORITY) {
-                priorityQueue.enqueue(task);
+            if (priority == Priority.ALTA) {
+                priorityTask.enqueue(task);
+            } else if (priority == Priority.MEDIA) {
+                priorityTask.enqueue(task);
             } else {
-                nonPriorityQueue.enqueue(task);
+                priorityTask.enqueue(task);
             }
 
             msg = "Tarea agregada exitosamente.";
@@ -52,12 +59,14 @@ public class Controller {
         return msg;
     }
 
-    private String generateUniqueID() {
-
-        String uniqueID = "T" + taskIdCounter;
-        taskIdCounter++;
-        return uniqueID;
-    }
+    /*
+     * private String generateUniqueID() {
+     * 
+     * String uniqueID = "T" + taskIdCounter;
+     * taskIdCounter++;
+     * return uniqueID;
+     * }
+     */
 
     public boolean searchTask(String taskId) {
         return taskTable.containsKey(taskId);
@@ -95,38 +104,19 @@ public class Controller {
         return msg + "\n";
     }
 
-    /*
-     * public void printTasksByDeadline() {
-     * 
-     * Node<String, Task> head = null;
-     * 
-     * for (int i = 0; i < taskTable.getSize(); i++) {
-     * Node<String, Task> node = taskTable.getBucket(i);
-     * while (node != null) {
-     * Node<String, Task> newNode = new Node<>(node.getKey(), node.getValue());
-     * if (head == null) {
-     * head = newNode;
-     * } else {
-     * Node<String, Task> temp = head;
-     * while (temp.getNext() != null) {
-     * temp = (Node<String, Task>) temp.getNext();
-     * }
-     * temp.setNext(newNode);
-     * }
-     * node = (Node<String, Task>) node.getNext();
-     * }
-     * }
-     * 
-     * Node<String, Task> temp = head;
-     * while (temp != null) {
-     * Task task = temp.getValue();
-     * SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-     * String formattedDeadline = dateFormat.format(task.getDeadline());
-     * System.out.println("ID: " + temp.getKey());
-     * System.out.println(task.toString());
-     * temp = (Node<String, Task>) temp.getNext();
-     * }
-     * }
-     */
+    public void printListByPriority() {
+        System.out.println("===== Tareas Ordenadas por Prioridad =====");
+
+        if (priorityTask.isEmpty()) {
+            System.out.println("No hay tareas prioritarias para mostrar.");
+            return;
+        }
+
+        while (!priorityTask.isEmpty()) {
+            Task task = priorityTask.dequeue();
+            System.out.println(task.toString());
+        }
+        System.out.println("=================================================");
+    }
 
 }

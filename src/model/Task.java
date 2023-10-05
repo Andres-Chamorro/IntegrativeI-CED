@@ -4,16 +4,18 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Task implements Comparable<Task> {
+    private String id;
     private String title;
     private String description;
     private Date deadline;
     private Priority priority;
 
-    public Task(String title, String description, Date deadline, Priority priority) {
+    public Task(String id, String title, String description, Date deadline, Priority priority) {
         this.title = title;
         this.description = description;
         this.deadline = deadline;
         this.priority = priority;
+        this.id = id;
     }
 
     public String getTitle() {
@@ -48,25 +50,33 @@ public class Task implements Comparable<Task> {
         this.priority = priority;
     }
 
+    public String getId() {
+        return this.id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     @Override
     public String toString() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String formattedDeadline = dateFormat.format(getDeadline());
-        return "Titulo: " + getTitle() + "\n" +
+        return "ID: " + getId() + "\n" +
+                "Titulo: " + getTitle() + "\n" +
                 "Description: " + getDescription() + "\n" +
                 "Fecha limite: " + formattedDeadline + "\n" +
-                "Prioridad: " + getPriority();
+                "Prioridad: " + getPriority() + "\n" +
+                "=====================================";
     }
 
     @Override
     public int compareTo(Task other) {
-        // Primero, compara por prioridad
         int priorityComparison = this.getPriority().compareTo(other.getPriority());
 
         if (priorityComparison != 0) {
             return priorityComparison;
         } else {
-            // Si las prioridades son iguales, compara por fecha límite
             return this.getDeadline().compareTo(other.getDeadline());
         }
     }

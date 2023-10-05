@@ -1,4 +1,4 @@
-package model;
+package dataEstructures;
 
 public interface IHash<K, V> {
     public void put(K key, V value);

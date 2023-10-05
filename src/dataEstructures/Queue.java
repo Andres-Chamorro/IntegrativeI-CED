@@ -1,12 +1,12 @@
-package model;
+package dataEstructures;
 
 import customExceptions.EmptyQueueException;
 
 public class Queue<T> implements IQueue<T> {
 
-    private Node<T> front;
-    private Node<T> rear;
-    private int size;
+    public Node<T> front;
+    public Node<T> rear;
+    public int size;
 
     // Constructor
     public Queue() {

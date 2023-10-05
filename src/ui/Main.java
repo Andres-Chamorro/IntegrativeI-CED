@@ -47,6 +47,7 @@ public class Main {
                     deleteTak();
                     break;
                 case 4:
+                    listPriority();
                     break;
                 case 5:
                     System.out.println("Saliendo...");
@@ -59,35 +60,50 @@ public class Main {
 
     public void addTask() {
         System.out.println();
-        System.out.print("Título: ");
-        String title = reader.nextLine();
+        boolean idExist;
+        do {
+            System.out.println("ID de la tarea");
+            String id = reader.nextLine();
+            idExist = controller.searchTask(id);
+            if (idExist) {
+                System.out.println("El id ya existe, ingrese un id unico");
+            } else {
+                System.out.print("Título: ");
+                String title = reader.nextLine();
 
-        System.out.print("Descripción: ");
-        String description = reader.nextLine();
+                System.out.print("Descripción: ");
+                String description = reader.nextLine();
 
-        System.out.print("Fecha Límite (yyyy-MM-dd): ");
-        Date deadline = parseDate();
+                System.out.print("Fecha Límite (yyyy-MM-dd): ");
+                Date deadline = parseDate();
 
-        System.out.print("¿Es prioritaria?:\n");
-        System.out.println("1. Si");
-        System.out.println("2. No");
-        int option = validateInt();
-        Priority priority = null;
+                System.out.print("¿ Que tan prioritaria es?:\n");
+                System.out.println("1. Alta");
+                System.out.println("2. Media");
+                System.out.println("3. Baja");
+                int option = validateInt();
+                Priority priority = null;
 
-        switch (option) {
-            case 1:
-                priority = Priority.PRIORITY;
-                break;
-            case 2:
-                priority = Priority.NO_PRIORITY;
-                break;
-            default:
-                System.out.println("Opción no válida");
-                break;
-        }
+                switch (option) {
+                    case 1:
+                        priority = Priority.ALTA;
+                        break;
+                    case 2:
+                        priority = Priority.MEDIA;
+                        break;
+                    case 3:
+                        priority = Priority.BAJA;
+                        break;
+                    default:
+                        System.out.println("Opción no válida");
+                        break;
+                }
 
-        String msg = controller.addTask(title, description, deadline, priority);
-        System.out.println(msg);
+                String msg = controller.addTask(id, title, description, deadline, priority);
+                System.out.println(msg);
+            }
+
+        } while (idExist);
     }
 
     public void deleteTak() {
@@ -135,16 +151,20 @@ public class Main {
                         break;
                     case 4:
                         System.out.print("Nueva Prioridad:\n");
-                        System.out.println("1. Prioritaria");
-                        System.out.println("2. No prioritaria");
+                        System.out.println("1. Alta");
+                        System.out.println("2. Media");
+                        System.out.println("3. Baja");
                         int option = validateInt();
 
                         switch (option) {
                             case 1:
-                                newPriority = Priority.PRIORITY;
+                                newPriority = Priority.ALTA;
                                 break;
                             case 2:
-                                newPriority = Priority.NO_PRIORITY;
+                                newPriority = Priority.MEDIA;
+                                break;
+                            case 3:
+                                newPriority = Priority.BAJA;
                                 break;
                             default:
                                 System.out.println("Opción no válida");
@@ -200,6 +220,10 @@ public class Main {
             }
         } while (option == Integer.MAX_VALUE);
         return option;
+    }
+
+    public void listPriority() {
+        controller.printListByPriority();
     }
 
 }

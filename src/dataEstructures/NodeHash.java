@@ -1,4 +1,4 @@
-package model;
+package dataEstructures;
 
 public class NodeHash<K, V> {
     public K key;
@@ -31,7 +31,7 @@ public class NodeHash<K, V> {
         return next;
     }
 
-    public void setNext(NodeHash<K,V> next) {
+    public void setNext(NodeHash<K, V> next) {
         this.next = next;
     }
 

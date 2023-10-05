@@ -1,4 +1,4 @@
-package model;
+package dataEstructures;
 
 public interface IStack<T> {
     public boolean isEmpty();

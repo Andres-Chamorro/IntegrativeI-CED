@@ -1,4 +1,4 @@
-package model;
+package dataEstructures;
 
 import customExceptions.EmptyStackException;
 

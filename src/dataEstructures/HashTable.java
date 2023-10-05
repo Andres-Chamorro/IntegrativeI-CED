@@ -1,4 +1,4 @@
-package model;
+package dataEstructures;
 
 public class HashTable<K, V> implements IHash<K, V> {
     private int size;

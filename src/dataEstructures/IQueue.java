@@ -1,4 +1,4 @@
-package model;
+package dataEstructures;
 
 public interface IQueue<T> {
     public void enqueue(T element);

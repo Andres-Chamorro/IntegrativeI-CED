@@ -1,4 +1,4 @@
-package model;
+package dataEstructures;
 
 public class Node<T> {
     public T data;

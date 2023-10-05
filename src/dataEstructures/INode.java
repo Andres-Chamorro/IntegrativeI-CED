@@ -1,4 +1,4 @@
-package model;
+package dataEstructures;
 
 public interface INode<T> {
     public T getdata();
