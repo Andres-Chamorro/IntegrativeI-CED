@@ -24,18 +24,19 @@ public class Queue<T> implements IQueue<T> {
     }
 
     public void enqueue(T data) {
-        Node<T> newNode = new Node<>(data);
-        if (isEmpty()) {
-            front = newNode;
-        } else {
-            rear.setNext(newNode);
-            ;
+        if (data != null) {
+            Node<T> newNode = new Node<>(data);
+            if (isEmpty()) {
+                front = newNode;
+            } else {
+                rear.setNext(newNode);
+            }
+            rear = newNode;
+            size++;
         }
-        rear = newNode;
-        size++;
     }
 
-    public T dequeue() {
+    public T dequeue() throws EmptyQueueException {
         if (isEmpty()) {
             throw new EmptyQueueException("No se puede hacer dequeue en una cola vacía.");
         }
@@ -48,9 +49,9 @@ public class Queue<T> implements IQueue<T> {
         return data;
     }
 
-    public T front() {
+    public T front() throws EmptyQueueException {
         if (isEmpty()) {
-            throw new EmptyQueueException("No se puede obtener el frente de una pila vacía.");
+            throw new EmptyQueueException("No se puede obtener el frente de una cola vacía.");
         }
         return front.getData();
     }

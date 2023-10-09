@@ -7,7 +7,6 @@ public class Stack<T> implements IStack<T> {
     private Node<T> top;
     private int size;
 
-    // Constructor
     public Stack() {
         top = null;
         size = 0;
@@ -28,9 +27,9 @@ public class Stack<T> implements IStack<T> {
         size++;
     }
 
-    public T pop() {
+    public T pop() throws EmptyStackException {
         if (isEmpty()) {
-            throw new EmptyStackException("No se puede hacer pop en una pila vacía.");
+            throw new EmptyStackException("Cannot pop from an empty stack");
         }
         T data = top.getData();
         top = top.getNext();
@@ -38,7 +37,7 @@ public class Stack<T> implements IStack<T> {
         return data;
     }
 
-    public T front() {
+    public T front() throws EmptyStackException {
         if (isEmpty()) {
             throw new EmptyStackException("No se puede obtener el frente de una pila vacía.");
         }

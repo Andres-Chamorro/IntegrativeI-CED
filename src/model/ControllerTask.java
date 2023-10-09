@@ -6,14 +6,14 @@ import dataEstructures.HashTable;
 import dataEstructures.PriorityQueue;
 import dataEstructures.Queue;
 
-public class Controller {
+public class ControllerTask {
     private HashTable<String, Task> taskTable;
     PriorityQueue<Task> priorityTask;
     Queue<Task> nonPriorityQueue;
     private String msg;
     private int taskIdCounter;
 
-    public Controller() {
+    public ControllerTask() {
         taskTable = new HashTable<>(1000);
         priorityTask = new PriorityQueue<>();
         nonPriorityQueue = new Queue<>();
@@ -24,10 +24,12 @@ public class Controller {
 
     public String addTask(String id, String title, String description, Date deadline, Priority priority) {
         msg = "";
-        try {
+
+        if (id == null || title == null || description == null || deadline == null || priority == null) {
+            msg = "Error al agregar la tarea: Todos los campos deben ser proporcionados y no pueden ser nulos.";
+        } else {
             Task task = new Task(id, title, description, deadline, priority);
 
-            // Agregar la tarea a la HashTable
             taskTable.put(id, task);
 
             if (priority == Priority.ALTA) {
@@ -39,9 +41,8 @@ public class Controller {
             }
 
             msg = "Tarea agregada exitosamente.";
-        } catch (Exception e) {
-            msg = "Error al agregar la tarea: " + e.getMessage();
         }
+
         return msg;
     }
 
@@ -53,26 +54,17 @@ public class Controller {
 
             taskTable.remove(taskId);
 
-            boolean removedFromPriorityQueue = priorityTask.removeElement(task);
+            priorityTask.removeElement(task);
 
-            if (removedFromPriorityQueue) {
-                msg = "Tarea eliminada exitosamente.";
-            } else {
-                msg = "La tarea con el ID " + taskId + " no existe.";
-            }
+            msg = "Tarea eliminada exitosamente.";
+
+        } else {
+            msg = "La tarea con el ID " + taskId + " no existe.";
+
         }
 
         return msg;
     }
-
-    /*
-     * private String generateUniqueID() {
-     * 
-     * String uniqueID = "T" + taskIdCounter;
-     * taskIdCounter++;
-     * return uniqueID;
-     * }
-     */
 
     public boolean searchTask(String taskId) {
         return taskTable.containsKey(taskId);
@@ -84,11 +76,11 @@ public class Controller {
         Task task = taskTable.get(taskId);
 
         if (task != null) {
-            if (!newTitle.isEmpty()) {
+            if (newTitle != null && !newTitle.isEmpty()) {
                 task.setTitle(newTitle);
                 msg += "\nTítulo modificado.";
             }
-            if (!newDescription.isEmpty()) {
+            if (newDescription != null && !newDescription.isEmpty()) {
                 task.setDescription(newDescription);
                 msg += "\nDescripción modificada.";
             }
@@ -96,8 +88,11 @@ public class Controller {
                 task.setDeadline(newDeadline);
                 msg += "\nFecha límite modificada.";
             }
-            task.setPriority(newIsPriority);
 
+            if (newIsPriority != null) {
+                task.setPriority(newIsPriority);
+                msg += "\nPrioridad modificada";
+            }
             if (!msg.isEmpty()) {
                 msg = "Tarea modificada exitosamente:" + msg;
             } else {
@@ -114,7 +109,7 @@ public class Controller {
         System.out.println("===== Tareas Ordenadas por Prioridad =====");
 
         if (priorityTask.isEmpty()) {
-            System.out.println("No hay tareas prioritarias para mostrar.");
+            System.out.println("No hay tareas por prioridad para mostrar.");
             return;
         }
 
@@ -128,6 +123,16 @@ public class Controller {
 
         priorityTask = tempQueue;
         System.out.println("=================================================");
+    }
+
+    public Task getTask(String taskId) {
+        Task element = null;
+        if (taskTable.containsKey(taskId)) {
+            element = taskTable.get(taskId);
+        } else {
+            element = null;
+        }
+        return element;
     }
 
 }

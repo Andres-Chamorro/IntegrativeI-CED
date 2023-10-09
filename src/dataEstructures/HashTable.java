@@ -10,34 +10,38 @@ public class HashTable<K, V> implements IHash<K, V> {
     }
 
     public void put(K key, V value) {
-        int hash = getHash(key);
-        NodeHash<K, V> node = new NodeHash<>(key, value);
+        if (key != null) {
+            int hash = getHash(key);
+            NodeHash<K, V> node = new NodeHash<>(key, value);
 
-        if (tabla[hash] == null) {
-            tabla[hash] = node;
-        } else {
-            NodeHash<K, V> current = tabla[hash];
-            while (current.getNext() != null) {
-                current = (NodeHash<K, V>) current.getNext();
+            if (tabla[hash] == null) {
+                tabla[hash] = node;
+            } else {
+                NodeHash<K, V> current = tabla[hash];
+                while (current.getNext() != null) {
+                    current = (NodeHash<K, V>) current.getNext();
+                }
+                current.setNext(node);
             }
-            current.setNext(node);
         }
     }
 
     @Override
     public V get(K key) {
-        int hash = getHash(key);
-        if (tabla[hash] != null) {
-            NodeHash<K, V> temp = tabla[hash];
+        if (key != null) {
+            int hash = getHash(key);
+            if (tabla[hash] != null) {
+                NodeHash<K, V> temp = tabla[hash];
 
-            while (temp != null) {
-                if (temp.getKey().equals(key)) {
-                    return temp.getValue();
+                while (temp != null) {
+                    if (temp.getKey().equals(key)) {
+                        return temp.getValue();
+                    }
+                    temp = (NodeHash<K, V>) temp.getNext();
                 }
-                temp = (NodeHash<K, V>) temp.getNext();
             }
         }
-        return null; // returns null if the key is not found.
+        return null;
     }
 
     @Override
@@ -95,14 +99,5 @@ public class HashTable<K, V> implements IHash<K, V> {
     public void setTabla(NodeHash<K, V>[] tabla) {
         this.tabla = tabla;
     }
-
-    /*
-     * public Node<K, V> getBucket(int index) {
-     * if (index < 0 || index >= size) {
-     * throw new IndexOutOfBoundsException("Índice fuera de rango.");
-     * }
-     * return tabla[index];
-     * }
-     */
 
 }

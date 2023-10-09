@@ -6,16 +6,16 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Scanner;
-import model.Controller;
+import model.ControllerTask;
 import model.Priority;
 
 public class Main {
     private Scanner reader;
-    private Controller controller;
+    private ControllerTask controller;
 
     public Main() {
         reader = new Scanner(System.in);
-        controller = new Controller();
+        controller = new ControllerTask();
     }
 
     public static void main(String[] args) {
@@ -34,7 +34,7 @@ public class Main {
             System.out.print("Elija una opción: ");
 
             int choice = validateInt();
-            reader.nextLine(); // Consumir la nueva línea después de nextInt()
+            reader.nextLine();
 
             switch (choice) {
                 case 1:
