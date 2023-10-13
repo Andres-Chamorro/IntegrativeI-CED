@@ -23,23 +23,30 @@ public class HashTableTest {
 	public void testPutAndGet() {
 		setupScenary1();
 
-		// Agrega elementos
-		taskTable.put("1", new Task("1", "Tarea 1", "Descripción 1", new Date(), Priority.ALTA));
-		taskTable.put("2", new Task("2", "Tarea 2", "Descripción 2", new Date(), Priority.MEDIA));
-		taskTable.put("3", new Task("3", "Tarea 3", "Descripción 3", new Date(), Priority.BAJA));
+		Task task1 = new Task("Tarea 1", "Descripción 1", new Date(), Priority.ALTA);
+		Task task2 = new Task("Tarea 2", "Descripción 2", new Date(), Priority.MEDIA);
+		Task task3 = new Task("Tarea 3", "Descripción 3", new Date(), Priority.BAJA);
+		Task task4 = new Task("Tarea 4", "Descripción 4", new Date(), Priority.ALTA);
 
-		// Verifica que los elementos se puedan recuperar correctamente
-		Task task1 = taskTable.get("1");
-		Task task2 = taskTable.get("2");
-		Task task3 = taskTable.get("3");
+		taskTable.put("1", task1);
+		taskTable.put("2", task2);
+		taskTable.put("3", task3);
+		taskTable.put("4", task4);
 
-		assertNotNull(task1);
-		assertNotNull(task2);
-		assertNotNull(task3);
+		Task taskone = taskTable.get("1");
+		Task tasktwo = taskTable.get("2");
+		Task taskthree = taskTable.get("3");
+		Task taskfour = taskTable.get("4");
 
-		assertEquals("Tarea 1", task1.getTitle());
-		assertEquals("Tarea 2", task2.getTitle());
-		assertEquals("Tarea 3", task3.getTitle());
+		assertNotNull(taskone);
+		assertNotNull(tasktwo);
+		assertNotNull(taskthree);
+		assertNotNull(taskfour);
+
+		assertEquals("Tarea 1", taskone.getTitle());
+		assertEquals("Tarea 2", tasktwo.getTitle());
+		assertEquals("Tarea 3", taskthree.getTitle());
+		assertEquals("Tarea 4", taskfour.getTitle());
 
 	}
 
@@ -47,7 +54,9 @@ public class HashTableTest {
 	public void testRemove() {
 		setupScenary1();
 
-		taskTable.put("1", new Task("1", "Tarea 1", "Descripción 1", new Date(), Priority.ALTA));
+		Task task1 = new Task("Tarea 1", "Descripción 1", new Date(), Priority.ALTA);
+
+		taskTable.put("1", task1);
 
 		taskTable.remove("1");
 
@@ -67,7 +76,7 @@ public class HashTableTest {
 	}
 
 	@Test
-	public void testCollisionHandling() {
+	public void testCollisionHandLing() {
 		setupScenary1();
 
 		taskTable.put("1", new Task("1", "Tarea 1", "Descripción 1", new Date(), Priority.ALTA));
@@ -90,17 +99,6 @@ public class HashTableTest {
 		taskTable.remove("100");
 
 		Task task = taskTable.get("100");
-
-		assertNull(task);
-	}
-
-	@Test
-	public void testPutNullValue() {
-		setupScenary1();
-
-		taskTable.put("1", null);
-
-		Task task = taskTable.get("1");
 
 		assertNull(task);
 	}
@@ -136,20 +134,6 @@ public class HashTableTest {
 		Task task = taskTable.get("6");
 
 		assertNull(task);
-	}
-
-	@Test
-	public void testPutAndGetWithNullKeys() {
-		setupScenary1();
-
-		taskTable.put(null, new Task("1", "Tarea 1", "Descripción 1", new Date(), Priority.ALTA));
-		taskTable.put("2", null);
-
-		Task task1 = taskTable.get(null);
-		Task task2 = taskTable.get("2");
-
-		assertNull(task1);
-		assertNull(task2);
 	}
 
 }

@@ -28,7 +28,7 @@ public class ControllerTask {
         if (id == null || title == null || description == null || deadline == null || priority == null) {
             msg = "Error al agregar la tarea: Todos los campos deben ser proporcionados y no pueden ser nulos.";
         } else {
-            Task task = new Task(id, title, description, deadline, priority);
+            Task task = new Task(title, description, deadline, priority);
 
             taskTable.put(id, task);
 

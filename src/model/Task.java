@@ -18,6 +18,13 @@ public class Task implements Comparable<Task> {
         this.id = id;
     }
 
+    public Task(String title, String description, Date deadline, Priority priority) {
+        this.title = title;
+        this.description = description;
+        this.deadline = deadline;
+        this.priority = priority;
+    }
+
     public String getTitle() {
         return this.title;
     }
