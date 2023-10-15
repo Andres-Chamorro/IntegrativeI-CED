@@ -23,10 +23,10 @@ public class HashTableTest {
 	public void testPutAndGet() {
 		setupScenary1();
 
-		Task task1 = new Task("1", "Tarea 1", "Descripción 1", new Date(), Priority.ALTA);
-		Task task2 = new Task("2", "Tarea 2", "Descripción 2", new Date(), Priority.MEDIA);
-		Task task3 = new Task("3", "Tarea 3", "Descripción 3", new Date(), Priority.BAJA);
-		Task task4 = new Task("4", "Tarea 4", "Descripción 4", new Date(), Priority.ALTA);
+		Task task1 = new Task("1", "Tarea 1", "Descripción 1", new Date(), 3);
+		Task task2 = new Task("2", "Tarea 2", "Descripción 2", new Date(), 2);
+		Task task3 = new Task("3", "Tarea 3", "Descripción 3", new Date(), 1);
+		Task task4 = new Task("4", "Tarea 4", "Descripción 4", new Date(), 0);
 
 		taskTable.put("1", task1);
 		taskTable.put("2", task2);
@@ -54,7 +54,7 @@ public class HashTableTest {
 	public void testRemove() {
 		setupScenary1();
 
-		Task task1 = new Task("1", "Tarea 1", "Descripción 1", new Date(), Priority.ALTA);
+		Task task1 = new Task("1", "Tarea 1", "Descripción 1", new Date(), 3);
 
 		taskTable.put("1", task1);
 
@@ -69,7 +69,7 @@ public class HashTableTest {
 	public void testContainsKey() {
 		setupScenary1();
 
-		taskTable.put("1", new Task("1", "Tarea 1", "Descripción 1", new Date(), Priority.ALTA));
+		taskTable.put("1", new Task("1", "Tarea 1", "Descripción 1", new Date(), 3));
 
 		assertTrue(taskTable.containsKey("1"));
 		assertFalse(taskTable.containsKey("2"));
@@ -79,8 +79,8 @@ public class HashTableTest {
 	public void testCollisionHandLing() {
 		setupScenary1();
 
-		taskTable.put("1", new Task("1", "Tarea 1", "Descripción 1", new Date(), Priority.ALTA));
-		taskTable.put("6", new Task("6", "Tarea 6", "Descripción 6", new Date(), Priority.MEDIA));
+		taskTable.put("1", new Task("1", "Tarea 1", "Descripción 1", new Date(), 3));
+		taskTable.put("6", new Task("6", "Tarea 6", "Descripción 6", new Date(), 2));
 
 		Task task1 = taskTable.get("1");
 		Task task6 = taskTable.get("6");
@@ -113,8 +113,8 @@ public class HashTableTest {
 	public void testGetWithSameHashKey() {
 		setupScenary1();
 
-		taskTable.put("1", new Task("1", "Tarea 1", "Descripción 1", new Date(), Priority.ALTA));
-		taskTable.put("6", new Task("6", "Tarea 6", "Descripción 6", new Date(), Priority.MEDIA));
+		taskTable.put("1", new Task("1", "Tarea 1", "Descripción 1", new Date(), 3));
+		taskTable.put("6", new Task("6", "Tarea 6", "Descripción 6", new Date(), 2));
 
 		Task task = taskTable.get("6");
 
@@ -126,8 +126,8 @@ public class HashTableTest {
 	public void testRemoveWithSameHashKey() {
 		setupScenary1();
 
-		taskTable.put("1", new Task("1", "Tarea 1", "Descripción 1", new Date(), Priority.ALTA));
-		taskTable.put("6", new Task("6", "Tarea 6", "Descripción 6", new Date(), Priority.MEDIA));
+		taskTable.put("1", new Task("1", "Tarea 1", "Descripción 1", new Date(), 3));
+		taskTable.put("6", new Task("6", "Tarea 6", "Descripción 6", new Date(), 2));
 
 		taskTable.remove("6");
 

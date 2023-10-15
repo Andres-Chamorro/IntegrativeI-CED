@@ -8,9 +8,9 @@ public class Task implements Comparable<Task> {
     private String title;
     private String description;
     private Date deadline;
-    private Priority priority;
+    private int priority;
 
-    public Task(String id, String title, String description, Date deadline, Priority priority) {
+    public Task(String id, String title, String description, Date deadline, int priority) {
         this.title = title;
         this.description = description;
         this.deadline = deadline;
@@ -42,11 +42,11 @@ public class Task implements Comparable<Task> {
         this.deadline = deadline;
     }
 
-    public Priority getPriority() {
+    public int getPriority() {
         return this.priority;
     }
 
-    public void setPriority(Priority priority) {
+    public void setPriority(int priority) {
         this.priority = priority;
     }
 
@@ -72,12 +72,12 @@ public class Task implements Comparable<Task> {
 
     @Override
     public int compareTo(Task other) {
-        int priorityComparison = this.getPriority().compareTo(other.getPriority());
+        int priorityComparison = Integer.compare(this.priority, other.priority);
 
         if (priorityComparison != 0) {
             return priorityComparison;
         } else {
-            return this.getDeadline().compareTo(other.getDeadline());
+            return this.deadline.compareTo(other.deadline);
         }
     }
 

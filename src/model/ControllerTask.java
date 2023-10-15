@@ -24,11 +24,11 @@ public class ControllerTask {
 
     }
 
-    public String addTask(String id, String title, String description, Date deadline, Priority priority) {
+    public String addTask(String id, String title, String description, Date deadline, int priority) {
         msg = "";
 
         try {
-            if (id == null || title == null || description == null || deadline == null || priority == null) {
+            if (id == null || title == null || description == null || deadline == null) {
                 throw new NullValueException(
                         "Error al agregar la tarea: Todos los campos deben ser proporcionados y no pueden ser nulos.");
             } else {
@@ -36,12 +36,10 @@ public class ControllerTask {
 
                 taskTable.put(id, task);
 
-                if (priority == Priority.ALTA) {
-                    priorityTask.enqueue(task);
-                } else if (priority == Priority.MEDIA) {
+                if (priority >= 2) {
                     priorityTask.enqueue(task);
                 } else {
-                    priorityTask.enqueue(task);
+                    nonPriorityQueue.enqueue(task);
                 }
 
                 msg = "Tarea agregada exitosamente.";
@@ -78,7 +76,7 @@ public class ControllerTask {
     }
 
     public String modifyTask(String taskId, String newTitle, String newDescription, Date newDeadline,
-            Priority newIsPriority) {
+            int newIsPriority) {
         msg = "";
         Task task = taskTable.get(taskId);
 
@@ -96,10 +94,9 @@ public class ControllerTask {
                 msg += "\nFecha límite modificada.";
             }
 
-            if (newIsPriority != null) {
-                task.setPriority(newIsPriority);
-                msg += "\nPrioridad modificada";
-            }
+            task.setPriority(newIsPriority);
+            msg += "\nPrioridad modificada";
+
             if (!msg.isEmpty()) {
                 msg = "Tarea modificada exitosamente:" + msg;
             } else {
@@ -113,22 +110,38 @@ public class ControllerTask {
     }
 
     public void printListByPriority() {
-        System.out.println("===== Tareas Ordenadas por Prioridad =====");
+        System.out.println("===== Tareas Prioritarias =====");
 
         if (priorityTask.isEmpty()) {
-            System.out.println("No hay tareas por prioridad para mostrar.");
-            return;
+            System.out.println("No hay tareas prioritarias para mostrar.");
+        } else {
+            PriorityQueue<Task> tempQueue = new PriorityQueue<>();
+
+            while (!priorityTask.isEmpty()) {
+                Task task = priorityTask.dequeue();
+                System.out.println(task.toString());
+                tempQueue.enqueue(task);
+            }
+
+            priorityTask = tempQueue;
         }
 
-        PriorityQueue<Task> tempQueue = new PriorityQueue<>();
+        System.out.println("===== Tareas No Prioritarias =====");
 
-        while (!priorityTask.isEmpty()) {
-            Task task = priorityTask.dequeue();
-            System.out.println(task.toString());
-            tempQueue.enqueue(task);
+        if (nonPriorityQueue.isEmpty()) {
+            System.out.println("No hay tareas no prioritarias para mostrar.");
+        } else {
+            Queue<Task> tempQueue = new Queue<>();
+
+            while (!nonPriorityQueue.isEmpty()) {
+                Task task = nonPriorityQueue.dequeue();
+                System.out.println(task.toString());
+                tempQueue.enqueue(task);
+            }
+
+            nonPriorityQueue = tempQueue;
         }
 
-        priorityTask = tempQueue;
         System.out.println("=================================================");
     }
 

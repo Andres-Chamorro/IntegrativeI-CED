@@ -17,16 +17,16 @@ public class ControllerTaskTest {
     @Test
     public void testAddTask() {
         Date deadline = new Date();
-        String task1 = controllerTask.addTask("horario", "lunes", "clases de 8 a 5", deadline, Priority.ALTA);
-        String task2 = controllerTask.addTask("clase", "fisica", "la mejor materia", deadline, Priority.BAJA);
-        String task3 = controllerTask.addTask("comida", "frijoles", "comida favorita", deadline, Priority.BAJA);
-        String task4 = controllerTask.addTask("mascota", "max", "llevar veterinario", deadline, Priority.ALTA);
-        String task5 = controllerTask.addTask("familia", "madre", "ayudar en casa", deadline, Priority.MEDIA);
-        String task6 = controllerTask.addTask("saludos", "description", "no saludar hoy", deadline, Priority.BAJA);
-        String task7 = controllerTask.addTask("35456", "colegio", "llevar documento mate", deadline, Priority.ALTA);
+        String task1 = controllerTask.addTask("horario", "lunes", "clases de 8 a 5", deadline, 0);
+        String task2 = controllerTask.addTask("clase", "fisica", "la mejor materia", deadline, 1);
+        String task3 = controllerTask.addTask("comida", "frijoles", "comida favorita", deadline, 2);
+        String task4 = controllerTask.addTask("mascota", "max", "llevar veterinario", deadline, 3);
+        String task5 = controllerTask.addTask("familia", "madre", "ayudar en casa", deadline, 0);
+        String task6 = controllerTask.addTask("saludos", "description", "no saludar hoy", deadline, 3);
+        String task7 = controllerTask.addTask("35456", "colegio", "llevar documento mate", deadline, 3);
         String task8 = controllerTask.addTask("1564", "pasaporte", "ir el domingo a reclamar", deadline,
-                Priority.MEDIA);
-        String task9 = controllerTask.addTask("65489", "amigos", "salir a cine el domingo", deadline, Priority.BAJA);
+                2);
+        String task9 = controllerTask.addTask("65489", "amigos", "salir a cine el domingo", deadline, 0);
 
         assertEquals("Tarea agregada exitosamente.", task1);
         assertEquals("Tarea agregada exitosamente.", task2);
@@ -63,12 +63,12 @@ public class ControllerTaskTest {
         testAddTask();
         Date newDeadline = new Date();
 
-        String result = controllerTask.modifyTask("horario", "newtitle", "newdescription", newDeadline, Priority.BAJA);
+        String result = controllerTask.modifyTask("horario", "newtitle", "newdescription", newDeadline, 0);
         String result1 = controllerTask.modifyTask("saludos", "newtitle1", "newdescription1", newDeadline,
-                Priority.ALTA);
+                1);
         String result2 = controllerTask.modifyTask("comida", "newtitle2", "newdescription2", newDeadline,
-                Priority.MEDIA);
-        String result3 = controllerTask.modifyTask("clase", "newtitle3", "newdescription3", newDeadline, Priority.BAJA);
+                2);
+        String result3 = controllerTask.modifyTask("clase", "newtitle3", "newdescription3", newDeadline, 3);
 
         assertTrue(result.contains("Tarea modificada exitosamente"));
         assertTrue(result1.contains("Tarea modificada exitosamente"));
@@ -102,9 +102,8 @@ public class ControllerTaskTest {
         String title = null;
         String description = "Descripción 4";
         Date deadline = null;
-        Priority priority = Priority.ALTA;
 
-        String result = controllerTask.addTask(taskId, title, description, deadline, priority);
+        String result = controllerTask.addTask(taskId, title, description, deadline, 0);
 
         assertEquals("Error al agregar la tarea: Todos los campos deben ser proporcionados y no pueden ser nulos.",
                 result);
@@ -126,11 +125,10 @@ public class ControllerTaskTest {
         String title = "Tarea de prueba";
         String description = "Descripción de prueba";
         Date deadline = new Date();
-        Priority priority = Priority.BAJA;
 
-        controllerTask.addTask(taskId, title, description, deadline, priority);
+        controllerTask.addTask(taskId, title, description, deadline, 2);
 
-        String result = controllerTask.modifyTask(taskId, null, null, null, null);
+        String result = controllerTask.modifyTask(taskId, null, null, null, 3);
 
         assertTrue(result.contains("No se realizaron modificaciones."));
     }

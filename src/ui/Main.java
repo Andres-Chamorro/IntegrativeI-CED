@@ -78,26 +78,11 @@ public class Main {
                 Date deadline = parseDate();
 
                 System.out.print("¿ Que tan prioritaria es?:\n");
-                System.out.println("1. Alta");
-                System.out.println("2. Media");
-                System.out.println("3. Baja");
-                int option = validateInt();
-                Priority priority = null;
-
-                switch (option) {
-                    case 1:
-                        priority = Priority.ALTA;
-                        break;
-                    case 2:
-                        priority = Priority.MEDIA;
-                        break;
-                    case 3:
-                        priority = Priority.BAJA;
-                        break;
-                    default:
-                        System.out.println("Opción no válida");
-                        break;
-                }
+                System.out.println("0. No prioritaria");
+                System.out.println("1. Poco prioritaria");
+                System.out.println("2. Prioritaria");
+                System.out.println("3. Muy prioritaria");
+                int priority = validateInt();
 
                 String msg = controller.addTask(id, title, description, deadline, priority);
                 System.out.println(msg);
@@ -121,7 +106,7 @@ public class Main {
             String newTitle = "";
             String newDescription = "";
             Date newDeadline = null;
-            Priority newPriority = null;
+            int newPriority = 0;
             int modifyChoice;
 
             do {
@@ -151,25 +136,11 @@ public class Main {
                         break;
                     case 4:
                         System.out.print("Nueva Prioridad:\n");
-                        System.out.println("1. Alta");
-                        System.out.println("2. Media");
-                        System.out.println("3. Baja");
-                        int option = validateInt();
-
-                        switch (option) {
-                            case 1:
-                                newPriority = Priority.ALTA;
-                                break;
-                            case 2:
-                                newPriority = Priority.MEDIA;
-                                break;
-                            case 3:
-                                newPriority = Priority.BAJA;
-                                break;
-                            default:
-                                System.out.println("Opción no válida");
-                                break;
-                        }
+                        System.out.println("0. No prioritaria");
+                        System.out.println("1. Poco prioritaria");
+                        System.out.println("2. Prioritaria");
+                        System.out.println("3. Muy prioritaria");
+                        newPriority = validateInt();
                         break;
                     case 0:
                         break;
