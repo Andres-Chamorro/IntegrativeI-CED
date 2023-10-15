@@ -60,10 +60,10 @@ public class Main {
             }
         }
     }
-    public void undoMethod(){
+
+    public void undoMethod() {
         controller.undo();
     }
-
 
     public void addTask() {
         System.out.println();

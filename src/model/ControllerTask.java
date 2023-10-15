@@ -11,7 +11,6 @@ import dataEstructures.HashTable;
 import dataEstructures.PriorityQueue;
 import dataEstructures.Queue;
 
-
 public class ControllerTask {
     private HashTable<String, Task> taskTable;
     PriorityQueue<Task> priorityTask;
@@ -20,6 +19,11 @@ public class ControllerTask {
     private int taskIdCounter;
     Stack<Actions> actionStack;
 
+    // The `public ControllerTask()` constructor initializes the `ControllerTask`
+    // object by creating
+    // instances of the `HashTable`, `PriorityQueue`, and `Queue` data structures.
+    // It also initializes
+    // other variables such as `msg`, `taskIdCounter`, and `actionStack`.
     public ControllerTask() {
         taskTable = new HashTable<>(1000);
         priorityTask = new PriorityQueue<>();
@@ -30,6 +34,25 @@ public class ControllerTask {
 
     }
 
+    /**
+     * The addTask function adds a new task to a task table and priority queue, and
+     * returns a message
+     * indicating the success or failure of the operation.
+     * 
+     * @param id          The unique identifier for the task.
+     * @param title       The title of the task.
+     * @param description The description parameter is a String that represents the
+     *                    description of the
+     *                    task. It provides additional details or information about
+     *                    the task.
+     * @param deadline    The deadline parameter is of type Date and represents the
+     *                    deadline for the task.
+     * @param priority    The priority parameter is an integer value that represents
+     *                    the priority level of
+     *                    the task. A higher priority value indicates a higher
+     *                    priority task.
+     * @return The method is returning a String message.
+     */
     public String addTask(String id, String title, String description, Date deadline, int priority) {
         msg = "";
 
@@ -59,6 +82,16 @@ public class ControllerTask {
         return msg;
     }
 
+    /**
+     * The function removes a task from a task table and updates the priority queue
+     * and action stack
+     * accordingly.
+     * 
+     * @param taskId The `taskId` parameter is a String that represents the unique
+     *               identifier of the
+     *               task that needs to be removed.
+     * @return The method is returning a String message.
+     */
     public String removeTask(String taskId) {
         msg = "";
 
@@ -69,7 +102,7 @@ public class ControllerTask {
 
             priorityTask.removeElement(task);
 
-            if(task.getPriority() <= 1){
+            if (task.getPriority() <= 1) {
                 nonPriorityQueue.dequeue();
             }
 
@@ -85,10 +118,34 @@ public class ControllerTask {
         return msg;
     }
 
+    /**
+     * The function checks if a task with a given ID exists in a task table.
+     * 
+     * @param taskId The parameter "taskId" is a String that represents the unique
+     *               identifier of a
+     *               task.
+     * @return The method is returning a boolean value.
+     */
     public boolean searchTask(String taskId) {
         return taskTable.containsKey(taskId);
     }
 
+    /**
+     * The function modifies a task by updating its title, description, deadline,
+     * and priority, and
+     * returns a message indicating the success or failure of the modification.
+     * 
+     * @param taskId         The ID of the task that needs to be modified.
+     * @param newTitle       The new title for the task.
+     * @param newDescription The new description for the task.
+     * @param newDeadline    The new deadline for the task. It is of type Date.
+     * @param newIsPriority  The parameter "newIsPriority" is an integer that
+     *                       represents the new priority
+     *                       of the task. It can have a value of 0 or 1, where 0
+     *                       represents a non-priority task and 1
+     *                       represents a priority task.
+     * @return The method is returning a String message.
+     */
     public String modifyTask(String taskId, String newTitle, String newDescription, Date newDeadline,
             int newIsPriority) {
         msg = "";
@@ -126,6 +183,11 @@ public class ControllerTask {
         return msg + "\n";
     }
 
+    /**
+     * The function prints the tasks in a priority queue and a non-priority queue,
+     * separating them and
+     * displaying a message if either queue is empty.
+     */
     public void printListByPriority() {
         System.out.println("===== Tareas Prioritarias =====");
 
@@ -159,9 +221,17 @@ public class ControllerTask {
             nonPriorityQueue = tempQueue;
         }
 
-        System.out.println("=================================================");
     }
 
+    /**
+     * The function returns a Task object based on the given taskId, or null if the
+     * taskId is not found
+     * in the taskTable.
+     * 
+     * @param taskId The parameter "taskId" is a String that represents the unique
+     *               identifier of a task.
+     * @return The method is returning a Task object.
+     */
     public Task getTask(String taskId) {
         Task element = null;
         if (taskTable.containsKey(taskId)) {
@@ -172,17 +242,23 @@ public class ControllerTask {
         return element;
     }
 
+    /**
+     * The `undo()` function pops the last action from the action stack and performs
+     * the corresponding
+     * undo operation based on the action type.
+     */
     public void undo() {
         if (!actionStack.isEmpty()) {
             Actions lastAction = actionStack.pop();
             String actionType = lastAction.getActionType();
-    
+
             switch (actionType) {
                 case "Add task":
                     removeTask(lastAction.getAfterTask().getId());
                     break;
                 case "Delete task":
-                    addTask(lastAction.getAfterTask().getId(), lastAction.getAfterTask().getTitle(), lastAction.getAfterTask().getDescription(),
+                    addTask(lastAction.getAfterTask().getId(), lastAction.getAfterTask().getTitle(),
+                            lastAction.getAfterTask().getDescription(),
                             lastAction.getAfterTask().getDeadline(), lastAction.getAfterTask().getPriority());
                     break;
                 case "Modify Task":
