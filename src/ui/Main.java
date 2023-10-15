@@ -29,7 +29,8 @@ public class Main {
             System.out.println("2. Modificar Tarea");
             System.out.println("3. Eliminar Tarea");
             System.out.println("4. Mostrar Tareas");
-            System.out.println("5. Salir");
+            System.out.println("5 Deshacer accion. ");
+            System.out.println("6. Salir");
             System.out.print("Elija una opción: ");
 
             int choice = validateInt();
@@ -49,6 +50,9 @@ public class Main {
                     listPriority();
                     break;
                 case 5:
+                    undoMethod();
+                    break;
+                case 6:
                     System.out.println("Saliendo...");
                     return;
                 default:
@@ -56,6 +60,10 @@ public class Main {
             }
         }
     }
+    public void undoMethod(){
+        controller.undo();
+    }
+
 
     public void addTask() {
         System.out.println();
