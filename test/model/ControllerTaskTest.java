@@ -78,22 +78,22 @@ public class ControllerTaskTest {
         assertEquals("newtitle", controllerTask.getTask("horario").getTitle());
         assertEquals("newdescription", controllerTask.getTask("horario").getDescription());
         assertEquals(newDeadline, controllerTask.getTask("horario").getDeadline());
-        assertEquals(Priority.BAJA, controllerTask.getTask("horario").getPriority());
+        assertEquals(0, controllerTask.getTask("horario").getPriority());
 
         assertEquals("newtitle1", controllerTask.getTask("saludos").getTitle());
         assertEquals("newdescription1", controllerTask.getTask("saludos").getDescription());
         assertEquals(newDeadline, controllerTask.getTask("saludos").getDeadline());
-        assertEquals(Priority.ALTA, controllerTask.getTask("saludos").getPriority());
+        assertEquals(1, controllerTask.getTask("saludos").getPriority());
 
         assertEquals("newtitle2", controllerTask.getTask("comida").getTitle());
         assertEquals("newdescription2", controllerTask.getTask("comida").getDescription());
         assertEquals(newDeadline, controllerTask.getTask("comida").getDeadline());
-        assertEquals(Priority.MEDIA, controllerTask.getTask("comida").getPriority());
+        assertEquals(2, controllerTask.getTask("comida").getPriority());
 
         assertEquals("newtitle3", controllerTask.getTask("clase").getTitle());
         assertEquals("newdescription3", controllerTask.getTask("clase").getDescription());
         assertEquals(newDeadline, controllerTask.getTask("clase").getDeadline());
-        assertEquals(Priority.BAJA, controllerTask.getTask("clase").getPriority());
+        assertEquals(3, controllerTask.getTask("clase").getPriority());
     }
 
     @Test
