@@ -2,8 +2,9 @@ package model;
 
 import dataEstructures.Queue;
 import customExceptions.EmptyQueueException;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+
+import org.junit.jupiter.api.Test;
 
 import static org.junit.Assert.*;
 
@@ -11,77 +12,133 @@ public class QueueTest {
 
     private Queue<Integer> queue;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         queue = new Queue<>();
     }
 
     @Test
-    public void testIsEmpty() {
-        assertTrue(queue.isEmpty());
-        queue.enqueue(1);
-        assertFalse(queue.isEmpty());
-        queue.dequeue();
-        assertTrue(queue.isEmpty());
-    }
-
-    @Test
-    public void testSize() {
-        assertEquals(0, queue.size());
-        queue.enqueue(1);
-        assertEquals(1, queue.size());
-        queue.enqueue(2);
-        assertEquals(2, queue.size());
-        queue.dequeue();
-        assertEquals(1, queue.size());
-        queue.dequeue();
-        assertEquals(0, queue.size());
-    }
-
-    @Test
-    public void testEnqueueAndDequeue() {
+    public void testEnqueueStandard() {
         queue.enqueue(1);
         queue.enqueue(2);
         queue.enqueue(3);
 
-        assertFalse(queue.isEmpty());
         assertEquals(3, queue.size());
+        assertEquals(Integer.valueOf(1), queue.front());
+    }
+
+    @Test
+    public void testEnqueueLimit() {
+        for (int i = 1; i <= 1000; i++) {
+            queue.enqueue(i);
+        }
+
+        assertEquals(1000, queue.size());
+        assertEquals(Integer.valueOf(1), queue.front());
+    }
+
+    @Test
+    public void testEnqueueNull() {
+        queue.enqueue(null);
+        assertTrue(queue.isEmpty());
+    }
+
+    @Test
+    public void testDequeueStandard() throws EmptyQueueException {
+        queue.enqueue(1);
+        queue.enqueue(2);
+        queue.enqueue(3);
 
         assertEquals(Integer.valueOf(1), queue.dequeue());
-        assertEquals(Integer.valueOf(2), queue.dequeue());
-        assertEquals(Integer.valueOf(3), queue.dequeue());
+        assertEquals(2, queue.size());
+    }
+
+    @Test
+    public void testDequeueLimit() throws EmptyQueueException {
+        for (int i = 1; i <= 1000; i++) {
+            queue.enqueue(i);
+        }
+        for (int i = 1; i <= 1000; i++) {
+            assertEquals(Integer.valueOf(i), queue.dequeue());
+        }
 
         assertTrue(queue.isEmpty());
+    }
+
+    @Test
+    public void testDequeueEmptyQueue() {
+        assertTrue(queue.isEmpty());
+        try {
+            queue.dequeue();
+            fail("Expected EmptyQueueException");
+        } catch (EmptyQueueException e) {
+            // Excepción esperada
+        }
+    }
+
+    @Test
+    public void testFrontStandard() throws EmptyQueueException {
+        queue.enqueue(5);
+        queue.enqueue(10);
+        queue.enqueue(15);
+
+        assertEquals(Integer.valueOf(5), queue.front());
+    }
+
+    @Test
+    public void testFrontLimit() throws EmptyQueueException {
+        for (int i = 1; i <= 1000; i++) {
+            queue.enqueue(i);
+        }
+        assertEquals(Integer.valueOf(1), queue.front());
+    }
+
+    @Test
+    public void testFrontEmptyQueue() {
+        assertTrue(queue.isEmpty());
+
+        try {
+            queue.front();
+            fail("Expected EmptyQueueException");
+        } catch (EmptyQueueException e) {
+            // Excepción esperada
+        }
+    }
+
+    @Test
+    public void testIsEmpty_standard() {
+        assertTrue(queue.isEmpty());
+    }
+
+    @Test
+    public void testIsEmpty_limit() {
+        queue.enqueue(1);
+        assertFalse(queue.isEmpty());
+    }
+
+    @Test
+    public void testIsEmpty_interesting() {
+        queue.enqueue(1);
+        queue.dequeue();
+        assertTrue(queue.isEmpty());
+    }
+
+    @Test
+    public void testSize_standard() {
         assertEquals(0, queue.size());
     }
 
     @Test
-    public void testFront() throws EmptyQueueException {
-        try {
-            queue.front();
-        } catch (EmptyQueueException e) {
-            assertEquals("No se puede obtener el frente de una cola vacía.", e.getMessage());
-
-        }
-
-        queue.enqueue(42);
-        assertEquals(Integer.valueOf(42), queue.front());
-
-        queue.enqueue(100);
-        assertEquals(Integer.valueOf(42), queue.front());
-
-        queue.dequeue();
-        assertEquals(Integer.valueOf(100), queue.front());
+    public void testSize_limit() {
+        queue.enqueue(1);
+        assertEquals(1, queue.size());
     }
 
-    @Test(expected = EmptyQueueException.class)
-    public void testDequeueFromEmptyQueueThrowsException() throws EmptyQueueException {
-        queue.dequeue();
-    }
-
-    @Test(expected = EmptyQueueException.class)
-    public void testFrontOfEmptyQueueThrowsException() throws EmptyQueueException {
-        queue.front();
+    @Test
+    public void testSize_interesting() {
+        queue.enqueue(1);
+        queue.enqueue(2);
+        assertEquals(2, queue.size());
     }
 
     @Test

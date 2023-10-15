@@ -1,15 +1,16 @@
 package model;
 
 import static org.junit.Assert.*;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
 import java.util.Date;
+import org.junit.jupiter.api.BeforeEach;
 
 public class ControllerTaskTest {
 
     private ControllerTask controllerTask;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         controllerTask = new ControllerTask();
     }

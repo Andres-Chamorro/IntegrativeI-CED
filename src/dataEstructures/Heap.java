@@ -41,7 +41,7 @@ public class Heap<T extends Comparable<T>> {
         return min;
     }
 
-    private void heapify(int index) {
+    public void heapify(int index) {
         int leftChildIndex = 2 * index + 1;
         int rightChildIndex = 2 * index + 2;
         int smallest = index;

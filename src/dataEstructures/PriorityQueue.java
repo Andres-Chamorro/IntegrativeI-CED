@@ -1,5 +1,7 @@
 package dataEstructures;
 
+import customExceptions.EmptyQueueException;
+
 public class PriorityQueue<T extends Comparable<T>> extends Queue<T> {
     private Heap<T> heap;
 
