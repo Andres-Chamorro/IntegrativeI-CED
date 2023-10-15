@@ -2,6 +2,8 @@ package model;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import customExceptions.NullValueException;
 import dataEstructures.HashTable;
 import dataEstructures.PriorityQueue;
 import dataEstructures.Queue;
@@ -25,22 +27,27 @@ public class ControllerTask {
     public String addTask(String id, String title, String description, Date deadline, Priority priority) {
         msg = "";
 
-        if (id == null || title == null || description == null || deadline == null || priority == null) {
-            msg = "Error al agregar la tarea: Todos los campos deben ser proporcionados y no pueden ser nulos.";
-        } else {
-            Task task = new Task(title, description, deadline, priority);
-
-            taskTable.put(id, task);
-
-            if (priority == Priority.ALTA) {
-                priorityTask.enqueue(task);
-            } else if (priority == Priority.MEDIA) {
-                priorityTask.enqueue(task);
+        try {
+            if (id == null || title == null || description == null || deadline == null || priority == null) {
+                throw new NullValueException(
+                        "Error al agregar la tarea: Todos los campos deben ser proporcionados y no pueden ser nulos.");
             } else {
-                priorityTask.enqueue(task);
-            }
+                Task task = new Task(id, title, description, deadline, priority);
 
-            msg = "Tarea agregada exitosamente.";
+                taskTable.put(id, task);
+
+                if (priority == Priority.ALTA) {
+                    priorityTask.enqueue(task);
+                } else if (priority == Priority.MEDIA) {
+                    priorityTask.enqueue(task);
+                } else {
+                    priorityTask.enqueue(task);
+                }
+
+                msg = "Tarea agregada exitosamente.";
+            }
+        } catch (NullValueException e) {
+            msg = e.getMessage();
         }
 
         return msg;

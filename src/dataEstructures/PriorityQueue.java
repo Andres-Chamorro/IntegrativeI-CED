@@ -1,55 +1,41 @@
 package dataEstructures;
 
 public class PriorityQueue<T extends Comparable<T>> extends Queue<T> {
+    private Heap<T> heap;
 
     public PriorityQueue() {
-        super();
+        heap = new Heap<>();
     }
 
-    public void enqueue(T data) {
-        Node<T> newNode = new Node<>(data);
+    public void enqueue(T item) {
+        heap.insert(item);
+    }
 
-        if (isEmpty() || data.compareTo(front.getData()) < 0) {
+    public T dequeue() {
+        return heap.extractMin();
+    }
 
-            newNode.setNext(front);
-            front = newNode;
-        } else {
-            Node<T> current = front;
-
-            while (current.getNext() != null &&
-                    data.compareTo(current.getNext().getData()) >= 0) {
-                current = current.getNext();
-            }
-
-            newNode.setNext(current.getNext());
-            current.setNext(newNode);
-        }
-
-        size++;
+    public boolean isEmpty() {
+        return heap.isEmpty();
     }
 
     public boolean removeElement(T element) {
-        boolean valid;
-        if (element != null) {
-            Queue<T> temp = new Queue<>();
-
-            while (!isEmpty()) {
-                T currentItem = dequeue();
-
-                if (!currentItem.equals(element)) {
-                    temp.enqueue(currentItem);
-                }
-            }
-
-            while (!temp.isEmpty()) {
-                enqueue(temp.dequeue());
-            }
-
-            valid = !isEmpty();
-        } else {
-            valid = false;
+        if (element == null) {
+            return false;
         }
-        return valid;
+        Heap<T> tempHeap = new Heap<>();
+
+        while (!isEmpty()) {
+            T currentItem = dequeue();
+
+            if (!currentItem.equals(element)) {
+                tempHeap.insert(currentItem);
+            }
+        }
+
+        heap = tempHeap;
+
+        return !isEmpty();
     }
 
 }

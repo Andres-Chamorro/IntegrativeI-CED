@@ -23,10 +23,10 @@ public class HashTableTest {
 	public void testPutAndGet() {
 		setupScenary1();
 
-		Task task1 = new Task("Tarea 1", "Descripción 1", new Date(), Priority.ALTA);
-		Task task2 = new Task("Tarea 2", "Descripción 2", new Date(), Priority.MEDIA);
-		Task task3 = new Task("Tarea 3", "Descripción 3", new Date(), Priority.BAJA);
-		Task task4 = new Task("Tarea 4", "Descripción 4", new Date(), Priority.ALTA);
+		Task task1 = new Task("1", "Tarea 1", "Descripción 1", new Date(), Priority.ALTA);
+		Task task2 = new Task("2", "Tarea 2", "Descripción 2", new Date(), Priority.MEDIA);
+		Task task3 = new Task("3", "Tarea 3", "Descripción 3", new Date(), Priority.BAJA);
+		Task task4 = new Task("4", "Tarea 4", "Descripción 4", new Date(), Priority.ALTA);
 
 		taskTable.put("1", task1);
 		taskTable.put("2", task2);
@@ -54,7 +54,7 @@ public class HashTableTest {
 	public void testRemove() {
 		setupScenary1();
 
-		Task task1 = new Task("Tarea 1", "Descripción 1", new Date(), Priority.ALTA);
+		Task task1 = new Task("1", "Tarea 1", "Descripción 1", new Date(), Priority.ALTA);
 
 		taskTable.put("1", task1);
 
