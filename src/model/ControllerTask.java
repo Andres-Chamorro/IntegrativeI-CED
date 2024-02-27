@@ -1,22 +1,31 @@
 package model;
 
 import java.util.Date;
+import java.util.Stack;
+
+import javax.swing.Action;
+
 import customExceptions.NullValueException;
 import dataEstructures.HashTable;
 import dataEstructures.PriorityQueue;
 import dataEstructures.Queue;
+
 
 public class ControllerTask {
     private HashTable<String, Task> taskTable;
     PriorityQueue<Task> priorityTask;
     Queue<Task> nonPriorityQueue;
     private String msg;
+    private int taskIdCounter;
+    Stack<Actions> actionStack;
 
     public ControllerTask() {
         taskTable = new HashTable<>(1000);
         priorityTask = new PriorityQueue<>();
         nonPriorityQueue = new Queue<>();
         msg = "";
+        taskIdCounter = 1;
+        actionStack = new Stack<>();
 
     }
 
@@ -39,6 +48,8 @@ public class ControllerTask {
                 }
 
                 msg = "Tarea agregada exitosamente.";
+                Actions action = new Actions("Add task", task);
+                actionStack.push(action);
             }
         } catch (NullValueException e) {
             msg = e.getMessage();
@@ -58,7 +69,13 @@ public class ControllerTask {
             priorityTask.removeElement(task);
             nonPriorityQueue.dequeue();
 
+            if(task.getPriority() <= 1){
+                nonPriorityQueue.dequeue();
+            }
+
             msg = "Tarea eliminada exitosamente.";
+            Actions action = new Actions("Delete task", task);
+            actionStack.push(action);
 
         } else {
             msg = "La tarea con el ID " + taskId + " no existe.";
@@ -98,6 +115,9 @@ public class ControllerTask {
 
             if (!msg.isEmpty()) {
                 msg = "Tarea modificada exitosamente:" + msg;
+                Task aftertask = taskTable.get(taskId);
+                Actions action = new Actions("Modify task", task, aftertask);
+                actionStack.push(action);
             } else {
                 msg = "No se realizaron modificaciones.";
             }
@@ -153,6 +173,28 @@ public class ControllerTask {
             element = null;
         }
         return element;
+    }
+
+    public void undo() {
+        if (!actionStack.isEmpty()) {
+            Actions lastAction = actionStack.pop();
+            String actionType = lastAction.getActionType();
+    
+            switch (actionType) {
+                case "Add task":
+                    removeTask(lastAction.getAfterTask().getId());
+                    break;
+                case "Delete task":
+                    addTask(lastAction.getAfterTask().getId(), lastAction.getAfterTask().getTitle(), lastAction.getAfterTask().getDescription(),
+                            lastAction.getAfterTask().getDeadline(), lastAction.getAfterTask().getPriority());
+                    break;
+                case "Modify Task":
+                    modifyTask(lastAction.getBeforeTask().getId(), lastAction.getBeforeTask().getTitle(),
+                            lastAction.getBeforeTask().getDescription(), lastAction.getBeforeTask().getDeadline(),
+                            lastAction.getBeforeTask().getPriority());
+                    break;
+            }
+        }
     }
 
 }

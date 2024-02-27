@@ -22,6 +22,43 @@ public class Main {
     }
 
     public void menu() {
+        while (true) {
+            System.out.println("===== Menú de Gestión de Tareas =====");
+            System.out.println("1. Agregar Tarea");
+            System.out.println("2. Modificar Tarea");
+            System.out.println("3. Eliminar Tarea");
+            System.out.println("4. Mostrar Tareas");
+            System.out.println("5 Deshacer accion. ");
+            System.out.println("6. Salir");
+            System.out.print("Elija una opción: ");
+
+            int choice = validateInt();
+            reader.nextLine();
+
+            switch (choice) {
+                case 1:
+                    addTask();
+                    break;
+                case 2:
+                    modifyTask();
+                    break;
+                case 3:
+                    deleteTak();
+                    break;
+                case 4:
+                    listPriority();
+                    break;
+                case 5:
+                    undoMethod();
+                    break;
+                case 6:
+                    System.out.println("Saliendo...");
+                    return;
+                default:
+                    System.out.println("Opción no válida. Intente de nuevo.");
+            }
+        }
+      
         JFrame frame = new JFrame("Menú de Gestión de Tareas");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(340, 220);
@@ -65,6 +102,10 @@ public class Main {
 
         panel.add(buttonPanel);
     }
+    public void undoMethod(){
+        controller.undo();
+    }
+
 
     public void addTask() {
         boolean idExist;
