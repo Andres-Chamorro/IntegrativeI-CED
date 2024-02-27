@@ -1,19 +1,18 @@
 package ui;
 
-import java.util.Scanner;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Scanner;
+
+import javax.swing.*;
+import java.awt.*;
+
 import model.ControllerTask;
 
 public class Main {
-    private Scanner reader;
     private ControllerTask controller;
 
     public Main() {
-        reader = new Scanner(System.in);
         controller = new ControllerTask();
     }
 
@@ -59,6 +58,49 @@ public class Main {
                     System.out.println("Opción no válida. Intente de nuevo.");
             }
         }
+      
+        JFrame frame = new JFrame("Menú de Gestión de Tareas");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(340, 220);
+        frame.setLocationRelativeTo(null);
+
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        frame.add(panel);
+
+        JButton addTaskButton = new JButton("Agregar Tarea");
+        JButton modifyTaskButton = new JButton("Modificar Tarea");
+        JButton deleteTaskButton = new JButton("Eliminar Tarea");
+        JButton listPriorityButton = new JButton("Mostrar Tareas");
+        JButton exitButton = new JButton("Salir");
+
+        addCenteredButton(panel, addTaskButton);
+        panel.add(Box.createRigidArea(new Dimension(0, 10)));
+        addCenteredButton(panel, modifyTaskButton);
+        panel.add(Box.createRigidArea(new Dimension(0, 10)));
+        addCenteredButton(panel, deleteTaskButton);
+        panel.add(Box.createRigidArea(new Dimension(0, 10)));
+        addCenteredButton(panel, listPriorityButton);
+        panel.add(Box.createRigidArea(new Dimension(0, 10)));
+        addCenteredButton(panel, exitButton);
+
+        addTaskButton.addActionListener(e -> addTask());
+        modifyTaskButton.addActionListener(e -> modifyTask());
+        deleteTaskButton.addActionListener(e -> deleteTask());
+        listPriorityButton.addActionListener(e -> listPriority());
+        exitButton.addActionListener(e -> System.exit(0));
+
+        frame.setVisible(true);
+    }
+
+    private void addCenteredButton(JPanel panel, JButton button) {
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.X_AXIS));
+        buttonPanel.add(Box.createHorizontalGlue());
+        buttonPanel.add(button);
+        buttonPanel.add(Box.createHorizontalGlue());
+
+        panel.add(buttonPanel);
     }
     public void undoMethod(){
         controller.undo();
@@ -66,48 +108,35 @@ public class Main {
 
 
     public void addTask() {
-        System.out.println();
         boolean idExist;
         do {
-            System.out.println("ID de la tarea");
-            String id = reader.nextLine();
+            String id = JOptionPane.showInputDialog("ID de la tarea");
             idExist = controller.searchTask(id);
             if (idExist) {
-                System.out.println("El id ya existe, ingrese un id unico");
+                JOptionPane.showMessageDialog(null, "El ID ya existe, ingrese un ID único");
             } else {
-                System.out.print("Título: ");
-                String title = reader.nextLine();
-
-                System.out.print("Descripción: ");
-                String description = reader.nextLine();
-
-                System.out.print("Fecha Límite (yyyy-MM-dd): ");
+                String title = JOptionPane.showInputDialog("Título: ");
+                String description = JOptionPane.showInputDialog("Descripción: ");
                 Date deadline = parseDate();
-
-                System.out.print("¿ Que tan prioritaria es?:\n");
-                System.out.println("0. No prioritaria");
-                System.out.println("1. Poco prioritaria");
-                System.out.println("2. Prioritaria");
-                System.out.println("3. Muy prioritaria");
-                int priority = validateInt();
+                String[] priorities = { "0. No prioritaria", "1. Poco prioritaria", "2. Prioritaria",
+                        "3. Muy prioritaria" };
+                int priority = JOptionPane.showOptionDialog(null, "¿Qué tan prioritaria es?", "Prioridad",
+                        JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, priorities, priorities[0]);
 
                 String msg = controller.addTask(id, title, description, deadline, priority);
-                System.out.println(msg);
+                JOptionPane.showMessageDialog(null, msg);
             }
-
         } while (idExist);
     }
 
-    public void deleteTak() {
-        System.out.println("Ingrese la clave de la tarea a eliminar");
-        String idTask = reader.nextLine();
+    public void deleteTask() {
+        String idTask = JOptionPane.showInputDialog("Ingrese la clave de la tarea a eliminar");
         String msg = controller.removeTask(idTask);
-        System.out.println(msg);
+        JOptionPane.showMessageDialog(null, msg);
     }
 
     public void modifyTask() {
-        System.out.print("Ingrese el ID de la tarea que desea modificar: ");
-        String taskId = reader.nextLine();
+        String taskId = JOptionPane.showInputDialog("Ingrese el ID de la tarea que desea modificar");
 
         if (controller.searchTask(taskId)) {
             String newTitle = "";
@@ -117,50 +146,44 @@ public class Main {
             int modifyChoice;
 
             do {
-                System.out.println("===== Menú de Modificación de Tarea =====");
-                System.out.println("1. Modificar Título");
-                System.out.println("2. Modificar Descripción");
-                System.out.println("3. Modificar Fecha Límite");
-                System.out.println("4. Modificar Prioridad");
-                System.out.println("0. Volver al menu principal");
-                System.out.print("Elija una opción: ");
+                String modifyMenuMessage = "===== Menú de Modificación de Tarea =====\n"
+                        + "1. Modificar Título\n"
+                        + "2. Modificar Descripción\n"
+                        + "3. Modificar Fecha Límite\n"
+                        + "4. Modificar Prioridad\n"
+                        + "0. Volver al menú principal";
 
-                modifyChoice = validateInt();
-                reader.nextLine(); // Consumir la nueva línea después de nextInt()
+                modifyChoice = Integer.parseInt(JOptionPane.showInputDialog(modifyMenuMessage));
 
                 switch (modifyChoice) {
                     case 1:
-                        System.out.print("Nuevo Título: ");
-                        newTitle = reader.nextLine();
+                        newTitle = JOptionPane.showInputDialog("Nuevo Título: ");
                         break;
                     case 2:
-                        System.out.print("Nueva Descripción: ");
-                        newDescription = reader.nextLine();
+                        newDescription = JOptionPane.showInputDialog("Nueva Descripción: ");
                         break;
                     case 3:
-                        System.out.print("Nueva Fecha Límite (yyyy-MM-dd): ");
-                        Date deadline = parseDate();
+                        newDeadline = parseDate();
                         break;
                     case 4:
-                        System.out.print("Nueva Prioridad:\n");
-                        System.out.println("0. No prioritaria");
-                        System.out.println("1. Poco prioritaria");
-                        System.out.println("2. Prioritaria");
-                        System.out.println("3. Muy prioritaria");
-                        newPriority = validateInt();
+                        String[] priorities = { "No prioritaria", "Poco prioritaria", "Prioritaria",
+                                "Muy prioritaria" };
+                        newPriority = JOptionPane.showOptionDialog(null, "Nueva Prioridad", "Prioridad",
+                                JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, priorities,
+                                priorities[0]);
                         break;
                     case 0:
                         break;
                     default:
-                        System.out.println("Opción no válida. Intente de nuevo.");
+                        JOptionPane.showMessageDialog(null, "Opción no válida. Intente de nuevo.");
                         break;
                 }
             } while (modifyChoice != 0);
 
             String modifyMessage = controller.modifyTask(taskId, newTitle, newDescription, newDeadline, newPriority);
-            System.out.println(modifyMessage);
+            JOptionPane.showMessageDialog(null, modifyMessage);
         } else {
-            System.out.println("La tarea con el ID " + taskId + " no existe.");
+            JOptionPane.showMessageDialog(null, "La tarea con el ID " + taskId + " no existe.");
         }
     }
 
@@ -169,39 +192,25 @@ public class Main {
         Date date = null;
 
         while (date == null) {
-            String dateString = reader.nextLine();
+            String dateString = JOptionPane.showInputDialog("Fecha Límite (yyyy-MM-dd):");
 
             try {
                 date = dateFormat.parse(dateString);
                 if (date.before(new Date())) {
-                    System.out.println("Error: La fecha límite no puede ser una fecha pasada.");
-                    date = null; // Reiniciamos date para solicitar una nueva fecha
+                    JOptionPane.showMessageDialog(null, "Error: La fecha límite no puede ser una fecha pasada.");
+                    date = null;
                 }
             } catch (ParseException e) {
-                System.out.println("Formato de fecha incorrecto. Por favor, use el formato yyyy-MM-dd.");
+                JOptionPane.showMessageDialog(null,
+                        "Formato de fecha incorrecto. Por favor, use el formato yyyy-MM-dd.");
             }
         }
 
         return date;
     }
 
-    public int validateInt() {
-        int option = 0;
-        do {
-            if (reader.hasNextInt()) {
-                option = reader.nextInt();
-            } else {
-                reader.next();// limpiar el scanner
-                System.out.println("Invalid number!");
-                System.out.print("Conrrently Type: ");
-                option = Integer.MAX_VALUE;
-            }
-        } while (option == Integer.MAX_VALUE);
-        return option;
-    }
-
     public void listPriority() {
-        controller.printListByPriority();
+        String list = controller.getListByPriority();
+        JOptionPane.showMessageDialog(null, list);
     }
-
 }

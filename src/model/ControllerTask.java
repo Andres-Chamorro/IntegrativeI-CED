@@ -1,6 +1,5 @@
 package model;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Stack;
 
@@ -42,7 +41,7 @@ public class ControllerTask {
 
                 taskTable.put(id, task);
 
-                if (priority >= 2) {
+                if (priority >= 1) {
                     priorityTask.enqueue(task);
                 } else {
                     nonPriorityQueue.enqueue(task);
@@ -68,6 +67,7 @@ public class ControllerTask {
             taskTable.remove(taskId);
 
             priorityTask.removeElement(task);
+            nonPriorityQueue.dequeue();
 
             if(task.getPriority() <= 1){
                 nonPriorityQueue.dequeue();
@@ -108,8 +108,10 @@ public class ControllerTask {
                 msg += "\nFecha límite modificada.";
             }
 
-            task.setPriority(newIsPriority);
-            msg += "\nPrioridad modificada";
+            if (newIsPriority != task.getPriority()) {
+                task.setPriority(newIsPriority);
+                msg += "\nPrioridad modificada.";
+            }
 
             if (!msg.isEmpty()) {
                 msg = "Tarea modificada exitosamente:" + msg;
@@ -126,40 +128,41 @@ public class ControllerTask {
         return msg + "\n";
     }
 
-    public void printListByPriority() {
-        System.out.println("===== Tareas Prioritarias =====");
+    public String getListByPriority() {
+        StringBuilder result = new StringBuilder();
+        result.append("===== Tareas Prioritarias =====\n");
 
         if (priorityTask.isEmpty()) {
-            System.out.println("No hay tareas prioritarias para mostrar.");
+            result.append("No hay tareas prioritarias para mostrar.\n");
         } else {
             PriorityQueue<Task> tempQueue = new PriorityQueue<>();
 
             while (!priorityTask.isEmpty()) {
                 Task task = priorityTask.dequeue();
-                System.out.println(task.toString());
+                result.append(task.toString()).append("\n");
                 tempQueue.enqueue(task);
             }
 
             priorityTask = tempQueue;
         }
 
-        System.out.println("===== Tareas No Prioritarias =====");
+        result.append("===== Tareas No Prioritarias =====\n");
 
         if (nonPriorityQueue.isEmpty()) {
-            System.out.println("No hay tareas no prioritarias para mostrar.");
+            result.append("No hay tareas no prioritarias para mostrar.\n");
         } else {
             Queue<Task> tempQueue = new Queue<>();
 
             while (!nonPriorityQueue.isEmpty()) {
                 Task task = nonPriorityQueue.dequeue();
-                System.out.println(task.toString());
+                result.append(task.toString()).append("\n");
                 tempQueue.enqueue(task);
             }
 
             nonPriorityQueue = tempQueue;
         }
 
-        System.out.println("=================================================");
+        return result.toString();
     }
 
     public Task getTask(String taskId) {
